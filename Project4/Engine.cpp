@@ -53,9 +53,10 @@ void Engine::Update()
 void Engine::Render()
 {
 	SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 255);
-	SDL_RenderPresent(m_Renderer);
+	SDL_RenderClear(m_Renderer);
 	player->Draw();
 	SDL_RenderPresent(m_Renderer);
+	
 }
 
 void Engine::Events()
@@ -65,6 +66,6 @@ void Engine::Events()
 	switch (event.type) {
 	case SDL_QUIT:
 		Quit();
-
+		break;
 	}
 }

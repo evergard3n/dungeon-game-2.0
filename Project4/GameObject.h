@@ -2,6 +2,7 @@
 #include "IObject.h"
 #include "Transform.h"
 #include <SDL.h>
+#include <iostream>
 using namespace std;
 struct Properties {
 public:
@@ -28,6 +29,7 @@ public:
 	{
 		m_Transform = new Transform(props->X, props->Y);
 	}
+	virtual ~GameObject(){}
 	virtual void Draw() = 0;
 	virtual void Clean() = 0;
 	virtual void Update(float dt) = 0;

@@ -6,7 +6,7 @@
 Warrior::Warrior(Properties* props) :Character(props){
 	m_rigidBody = new RigidBody();
 	m_Animation = new Animation();
-	m_Animation->SetProps(m_TextureID, 1, 4, 100, SDL_FLIP_NONE);
+	m_Animation->SetProps(m_TextureID, 1, 4, 120, SDL_FLIP_NONE);
 }
 
 
