@@ -4,6 +4,8 @@
 #include "Transform.h"
 #include "Warrior.h"
 #include "Animation.h"
+#include "Input.h"
+#include <SDL.h>
 #include <iostream>
 Engine* Engine::s_Instance = nullptr;
 Warrior* player = nullptr;
@@ -47,6 +49,9 @@ void Engine::Quit()
 
 void Engine::Update()
 {
+	if (Input::GetInstance()->getKeyDown(SDL_SCANCODE_A)) {
+		SDL_Log("Key a pushed!");
+	}
 	player->Update(0);
 }
 
@@ -61,11 +66,5 @@ void Engine::Render()
 
 void Engine::Events()
 {
-	SDL_Event event;
-	SDL_PollEvent(&event);
-	switch (event.type) {
-	case SDL_QUIT:
-		Quit();
-		break;
-	}
+	Input::GetInstance()->listen();
 }
