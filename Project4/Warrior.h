@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include <SDL.h>
 #include "RigidBody.h"
+#include "Input.h"
 class Warrior: public Character
 {
 public:

@@ -26,6 +26,7 @@ bool Engine::Init()
 		return false;
 	}
 	TextureManager::GetInstance()->Load("player", "textures/bocchi hero.png");
+	TextureManager::GetInstance()->Load("player_running", "textures/running.png");
 	player = new Warrior(new Properties("player", 200, 200, 192, 192));
 	Transform tf;
 	tf.Log();
@@ -49,9 +50,6 @@ void Engine::Quit()
 
 void Engine::Update()
 {
-	if (Input::GetInstance()->getKeyDown(SDL_SCANCODE_A)) {
-		SDL_Log("Key a pushed!");
-	}
 	player->Update(0);
 }
 
