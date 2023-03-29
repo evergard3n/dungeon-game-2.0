@@ -1,5 +1,5 @@
 #include "Engine.h"
-
+#include "Timer.h"
 using namespace std;
 
 int main(int argc, char** argv)
@@ -9,6 +9,7 @@ int main(int argc, char** argv)
 		Engine::GetInstance()->Events();
 		Engine::GetInstance()->Update();
 		Engine::GetInstance()->Render();
+		Timer::getInstance()->tick();
 	}
 	Engine::GetInstance()->Clean();
 	return 0;

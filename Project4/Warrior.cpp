@@ -24,11 +24,11 @@ void Warrior::Update(float dt)
 {
 	m_rigidBody->unsetForce();
 	m_Animation->SetProps("player", 1, 4, 100);
-	if (Input::GetInstance()->getKeyDown(SDL_SCANCODE_A)) {
+	if (Input::GetInstance()->getKeyDown(SDL_SCANCODE_A)|| Input::GetInstance()->getKeyDown(SDL_SCANCODE_LEFT)) {
 		m_rigidBody->applyForceX(5*BACKWARD);
 		m_Animation->SetProps("player_running", 1, 4, 100, SDL_FLIP_HORIZONTAL);
 	}
-	if (Input::GetInstance()->getKeyDown(SDL_SCANCODE_D)) {
+	if (Input::GetInstance()->getKeyDown(SDL_SCANCODE_D)|| Input::GetInstance()->getKeyDown(SDL_SCANCODE_RIGHT)) {
 		m_rigidBody->applyForceX(5*FORWARD);
 		m_Animation->SetProps("player_running", 1, 4, 100, SDL_FLIP_NONE);
 	}

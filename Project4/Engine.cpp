@@ -5,6 +5,7 @@
 #include "Warrior.h"
 #include "Animation.h"
 #include "Input.h"
+#include "Timer.h"
 #include <SDL.h>
 #include <iostream>
 Engine* Engine::s_Instance = nullptr;
@@ -50,7 +51,8 @@ void Engine::Quit()
 
 void Engine::Update()
 {
-	player->Update(0);
+	float dt= Timer::getInstance()->getDeltaTime();
+	player->Update(dt);
 }
 
 void Engine::Render()
