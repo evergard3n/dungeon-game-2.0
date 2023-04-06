@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "Timer.h"
 #include "mapParser.h"
+#include "Camera.h"
 #include <SDL.h>
 #include <iostream>
 Engine* Engine::s_Instance = nullptr;
@@ -41,7 +42,9 @@ bool Engine::Init()
 	//background = new Properties("background", 0, 0, 50, 50);
 	TextureManager::GetInstance()->Load("player", "textures/bocchi hero.png");
 	TextureManager::GetInstance()->Load("player_running", "textures/running.png");
-	player = new Warrior(new Properties("player", 100, 500, 192, 192));
+	TextureManager::GetInstance()->Load("bg", "textures/map/bg full.jpg");
+	player = new Warrior(new Properties("player", 100, 200, 160, 160));
+	Camera::getInstance()->setTarget(player->getOrigin());
 	Transform tf;
 	tf.Log();
 	return m_IsRunning = true;
@@ -69,15 +72,16 @@ void Engine::Update()
 	
 	player->Update(dt);
 	m_LevelMap->update();
+	Camera::getInstance()->update(dt);
 }
 
 void Engine::Render()
 {
 	SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 255);
 	SDL_RenderClear(m_Renderer);
+	TextureManager::GetInstance()->Draw("bg", 0, 0, 2048, 848);
 	m_LevelMap->render();
 	player->Draw();
-	
 	SDL_RenderPresent(m_Renderer);
 	
 }

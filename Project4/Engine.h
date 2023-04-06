@@ -22,6 +22,7 @@ public:
 	void Render();
 	void Events();
 
+	inline gameMap* getMap() { return m_LevelMap; }
 	inline bool IsRunning() {
 		return m_IsRunning;
 	}

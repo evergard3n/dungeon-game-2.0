@@ -49,7 +49,7 @@ bool mapParser::parse(std::string id, std::string source)
 TileLayer* mapParser::parseTileLayer(TiXmlElement* xmlLayer, tilesetlist tilesets, int tilesize, int rowcount, int colcount) {
     //int layerID = 0;
     //xmlLayer->Attribute("id", &layerID);
-
+    //read data from xml file
     TiXmlElement* data = nullptr;
     for (TiXmlElement* e = xmlLayer->FirstChildElement(); e != nullptr; e = e->NextSiblingElement()) {
         if (e->Value() == std::string("data")) {
@@ -59,17 +59,17 @@ TileLayer* mapParser::parseTileLayer(TiXmlElement* xmlLayer, tilesetlist tileset
     }
 
     // Parse Layer tile map
-    std::string matrix(data->GetText());
-    std::istringstream iss(matrix);
-    std::string id;
-    
+    std::string matrix(data->GetText()); //doi het du lieu trong data thanh text, luu trong chuoi matrix
+    std::istringstream iss(matrix); //tao moi chuoi iss de doc du lieu tu matrix, roi luu vao trong temp 
+    std::string temp; 
+    //read element from xml to tilemap
     tilemap tilemap(rowcount, std::vector<int>(colcount, 0));
     for (int row = 0; row < rowcount; row++) {
         for (int col = 0; col < colcount; col++) {
-            getline(iss, id, ',');
-            std::stringstream convertor(id);
-            convertor >> tilemap[row][col];
-
+            getline(iss, temp, ',');
+            std::stringstream convertor(temp); //lai doc tu temp
+            convertor >> tilemap[row][col]; //luu tu convertor vao tilemap
+            
             if (!iss.good())
                 break;
         }
