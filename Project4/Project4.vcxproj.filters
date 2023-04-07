@@ -24,12 +24,6 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,10 +39,10 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TileLayers.cpp">
+    <ClCompile Include="TileLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mapParser.cpp">
+    <ClCompile Include="MapParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tinystr.cpp">
@@ -66,28 +60,13 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
+    <ClCompile Include="CollisionHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2D.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IObject.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">
       <Filter>Header Files</Filter>
@@ -98,25 +77,22 @@
     <ClInclude Include="Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidBody.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="layer.h">
+    <ClInclude Include="Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gameMap.h">
+    <ClInclude Include="GameMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TileLayers.h">
+    <ClInclude Include="TileLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mapParser.h">
+    <ClInclude Include="MapParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml1.h">
@@ -131,10 +107,28 @@
     <ClInclude Include="Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
+    <ClInclude Include="CollisionHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="impact.h">
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

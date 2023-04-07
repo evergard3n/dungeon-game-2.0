@@ -1,16 +1,31 @@
 #include "Camera.h"
+#include "Engine.h"
 Camera* Camera::s_Instance = nullptr;
-void Camera::update(float dt)
-{
-	if (m_target != nullptr) {
-		m_charbox.x = m_target->X - SCREEN_WIDTH / 2;
-		m_charbox.y = m_target->Y - SCREEN_HEIGHT / 2;
-		if (m_charbox.x < 0) m_charbox.x = 0;
-		if (m_charbox.y < 0) m_charbox.y = 0;
-		if (m_charbox.x > (2 * SCREEN_WIDTH - m_charbox.w))
-			m_charbox.x = (2 * SCREEN_WIDTH - m_charbox.w);
-		if (m_charbox.y > ( SCREEN_WIDTH - m_charbox.h))
-			m_charbox.y = ( SCREEN_WIDTH - m_charbox.h);
-		m_pos = Vector2D(m_charbox.x, m_charbox.y);
-	}
+
+void Camera::Update(float dt) {
+
+    if (m_Target != nullptr) {
+
+        m_ViewBox.x = m_Target->X - SCREEN_WIDTH / 2;
+        m_ViewBox.y = m_Target->Y - SCREEN_HEIGHT / 2;
+
+        if (m_ViewBox.x < 0) {
+            m_ViewBox.x = 0;
+        }
+
+        if (m_ViewBox.y < 0) {
+            m_ViewBox.y = 0;
+        }
+
+        if (m_ViewBox.x > (2 * SCREEN_WIDTH - m_ViewBox.w)) {
+            m_ViewBox.x = (2 * SCREEN_WIDTH - m_ViewBox.w);
+        }
+
+        if (m_ViewBox.y > (SCREEN_HEIGHT - m_ViewBox.h)) {
+            m_ViewBox.y = (SCREEN_HEIGHT - m_ViewBox.h);
+        }
+
+        m_Position = Vector2D(m_ViewBox.x, m_ViewBox.y);
+    }
 }
+

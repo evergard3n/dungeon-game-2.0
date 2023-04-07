@@ -1,28 +1,30 @@
-#pragma once
+#ifndef MAPPARSER_H
+#define MAPPARSER_H
+
 #include <map>
 #include <string>
-#include "gameMap.h"
-#include "TileLayers.h"
+#include "GameMap.h"
 #include "tinyxml1.h"
+#include "TileLayer.h"
 
-using namespace std;
-class mapParser
-{
+class MapParser {
+
 public:
-	bool load();
-	void clean();
-	inline gameMap* getMaps(string id) {
-		return m_mapDict[id];
-	}
-	inline static mapParser* getInstance() {
-		return s_instance = (s_instance != nullptr) ? s_instance : new mapParser();
-	}
+    bool Load();
+    void Clean();
+
+    inline GameMap* GetMap(std::string id) { return m_MapDict[id]; }
+    inline static MapParser* GetInstance() { return s_Instance = (s_Instance != nullptr) ? s_Instance : new MapParser(); }
+
 private:
-	bool parse(string id, string source);
-	Tileset parseTileset(TiXmlElement* xmlTileset);
-	TileLayer* parseTileLayer(TiXmlElement* xmlLayer, tilesetlist tilesets, int tilesize, int rowcount, int colcount);
-	mapParser(){}
-	static mapParser* s_instance;
-	map<string, gameMap*> m_mapDict;
+    MapParser() {}
+
+    bool Parse(std::string id, std::string source);
+    Tileset ParseTileset(TiXmlElement* xmlTileset);
+    TileLayer* ParseTileLayer(TiXmlElement* xmlLayer, std::vector<Tileset> tilesets, int tilesize, int rowcount, int colcount);
+
+    static MapParser* s_Instance;
+    std::map<std::string, GameMap*> m_MapDict;
 };
 
+#endif // MAPPARSER_H
