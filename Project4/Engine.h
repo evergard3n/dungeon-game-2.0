@@ -29,7 +29,7 @@ public:
 
 private:
     Engine() {}
-    bool m_IsRunning;
+    bool m_IsRunning = false;
 
     GameMap* m_LevelMap;
     SDL_Window* m_Window;

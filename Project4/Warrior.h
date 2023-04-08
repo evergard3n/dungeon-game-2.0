@@ -8,7 +8,7 @@
 #include "Vector2D.h"
 
 #define JUMP_TIME 15.0f;
-#define JUMP_FORCE 10.0f
+#define JUMP_FORCE 6.0f
 
 class Warrior : public Character {
 

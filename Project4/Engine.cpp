@@ -45,7 +45,7 @@ bool Engine::Init() {
 
     TextureManager::GetInstance()->Load("bg", "textures/map/bg full.jpg");
 
-    player = new Warrior(new Properties("player", 100, 200, 160, 160));
+    player = new Warrior(new Properties("player", 50, 200, 96, 96));
 
 
     Camera::GetInstance()->SetTarget(player->GetOrigin());
@@ -81,6 +81,7 @@ void Engine::Clean() {
     SDL_DestroyWindow(m_Window);
     IMG_Quit();
     SDL_Quit();
+ 
 }
 
 void Engine::Quit() {

@@ -11,7 +11,7 @@ class CollisionHandler {
 public:
     bool MapCollision(SDL_Rect a);
     bool CheckCollision(SDL_Rect a, SDL_Rect b);
-
+    bool ConditionCollision(SDL_Rect a, int b);
     inline static CollisionHandler* GetInstance() { return s_Instance = (s_Instance != nullptr) ? s_Instance : new CollisionHandler(); }
 
 private:
