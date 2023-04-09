@@ -94,6 +94,15 @@ void Warrior::Update(float dt) {
         Engine::GetInstance()->Clean();
         Engine::GetInstance()->Quit();
     }
+    //current winning condition
+    std::cout << m_Transform->X << " " << m_Transform->Y << std::endl;
+    
+    if (m_Transform->Y == 197 && m_Transform->X == 1673) {
+        std::cout << "Stage Cleared!" << std::endl;
+        Engine::GetInstance()->Clean();
+        Engine::GetInstance()->Quit();
+    }
+    
     /*if (CollisionHandler::GetInstance()->ConditionCollision(m_Collider->Get(), 27)) {
         m_RigidBody->Update(dt);
         if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) {
