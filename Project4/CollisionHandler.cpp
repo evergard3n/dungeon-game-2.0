@@ -14,12 +14,13 @@ bool CollisionHandler::CheckCollision(SDL_Rect a, SDL_Rect b) {
     return (x_overlaps && y_overlaps);
 }
 
-bool CollisionHandler::ConditionCollision(SDL_Rect a, int b)
+
+int CollisionHandler::ConditionCollision(SDL_Rect a)
 {
     int tileSize = 32;
     int RowCount = 20;
     int ColCount = 60;
-
+    int temp = 0;
     int left_tile = a.x / tileSize;
     int right_tile = (a.x + a.w) / tileSize;
 
@@ -34,13 +35,15 @@ bool CollisionHandler::ConditionCollision(SDL_Rect a, int b)
 
     for (int i = left_tile; i <= right_tile; ++i) {
         for (int j = top_tile; j <= bottom_tile; ++j) {
-            if (m_CollisionTilemap[j][i+1] == b) {
-                return true;
-            }
+
+                temp= m_CollisionTilemap[j][i];
+                if (temp > 0) return temp;
+                
         }
     }
+    return -1;
 
-    return false;
+
 }
 
 bool CollisionHandler::MapCollision(SDL_Rect a) {

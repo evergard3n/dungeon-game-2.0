@@ -38,14 +38,18 @@ void Warrior::Update(float dt) {
 
     if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) {
         m_RigidBody->ApplyForceX(3 * BACKWARD);
+        m_Flip = SDL_FLIP_HORIZONTAL;
         m_Animation->SetProps("player_run", 1, 4, 100, SDL_FLIP_HORIZONTAL);
     }
 
     if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_D)) {
         m_RigidBody->ApplyForceX(3 * FORWARD);
+        m_Flip = SDL_FLIP_NONE;
         m_Animation->SetProps("player_run", 1, 4, 100);
     }
-
+    if (m_Flip == SDL_FLIP_HORIZONTAL) {
+        m_Animation->SetProps("player", 1, 4, 100, SDL_FLIP_HORIZONTAL);
+    }
     // Jump
     if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_W) && m_IsGrounded) {
         m_IsJumping = true;
@@ -86,7 +90,9 @@ void Warrior::Update(float dt) {
     }
 
     if (m_IsJumping || !m_IsGrounded) {
-        m_Animation->SetProps("player_jump", 1, 2, 150);
+        if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) m_Animation->SetProps("player_jump", 1, 2, 150, SDL_FLIP_HORIZONTAL);
+        else m_Animation->SetProps("player_jump", 1, 2, 150);
+        
     }
     //current losing condition code
     if(m_Transform->Y/32>=17) {
@@ -96,8 +102,8 @@ void Warrior::Update(float dt) {
     }
     //current winning condition
     std::cout << m_Transform->X << " " << m_Transform->Y << std::endl;
-    
-    if (m_Transform->Y == 197 && m_Transform->X == 1673) {
+    std::cout << CollisionHandler::GetInstance()->ConditionCollision(m_Collider->Get()) << std::endl;
+    if (CollisionHandler::GetInstance()->ConditionCollision(m_Collider->Get()) == 8) {
         std::cout << "Stage Cleared!" << std::endl;
         Engine::GetInstance()->Clean();
         Engine::GetInstance()->Quit();

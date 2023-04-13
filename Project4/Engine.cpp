@@ -43,7 +43,7 @@ bool Engine::Init() {
     TextureManager::GetInstance()->Load("player_run", "textures/running.png");
     TextureManager::GetInstance()->Load("player_jump", "textures/running.png");
 
-    TextureManager::GetInstance()->Load("bg", "textures/map/bocchi bg 2.jpg");
+    TextureManager::GetInstance()->Load("bg", "textures/map/bg full.jpg");
 
     player = new Warrior(new Properties("player", 50, 200, 96, 96));
     
