@@ -2,8 +2,9 @@
 
 MapParser* MapParser::s_Instance = nullptr;
 
-bool MapParser::Load() {
-    return Parse("level1", "textures/map/help.tmx");
+bool MapParser::Load(std::string id) {
+    
+    return Parse("level1", "textures/map/"+id);
 }
 
 bool MapParser::Parse(std::string id, std::string source) {

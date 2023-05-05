@@ -24,7 +24,7 @@ bool TextureManager::Load(std::string id, std::string filename) {
 
 void TextureManager::Draw(std::string id, int x, int y, int width, int heigt, SDL_RendererFlip flip) {
     SDL_Rect srcRect = { 0, 0, width, heigt };
-    Vector2D cam = Camera::GetInstance()->GetPosition() * 0.5;
+    Vector2D cam = Camera::GetInstance()->GetPosition();
     SDL_Rect dstRect = { x - cam.X, y - cam.Y, width, heigt };
     SDL_RenderCopyEx(Engine::GetInstance()->GetRenderer(), m_TextureMap[id], &srcRect, &dstRect, 0, nullptr, flip);
 }
@@ -36,6 +36,34 @@ void TextureManager::DrawFrame(std::string id, int x, int y, int width, int heig
     SDL_Rect dstRect = { x - cam.X, y - cam.Y, width, heigt };
     SDL_RenderCopyEx(Engine::GetInstance()->GetRenderer(), m_TextureMap[id], &srcRect, &dstRect, 0, nullptr, flip);
 }
+
+void TextureManager::LoadnDrawText(std::string id, std::string text,int x,int y, SDL_Color text_color,TTF_Font* font)
+{
+    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), text_color);
+    if (surface == nullptr) {
+        std::cout << "Failed to load text surface\n";
+        std::cout << "Error:" << TTF_GetError()<<std::endl;
+        
+    }
+    else {
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(Engine::GetInstance()->GetRenderer(), surface);
+        if (texture == nullptr) {
+            std::cout << "Failed to load text texture from surface\n";
+            std::cout << "Error:" << TTF_GetError()<<std::endl;
+           
+        }
+        else {
+            m_TextureMap[id] = texture;
+            SDL_Rect srcRect = { 0, 0, surface->w, surface->h };
+            Vector2D cam = Camera::GetInstance()->GetPosition();
+            SDL_Rect dstRect = { x - cam.X, y - cam.Y, surface->w, surface->h };
+            SDL_RenderCopyEx(Engine::GetInstance()->GetRenderer(), m_TextureMap[id], &srcRect, &dstRect, 0, nullptr, SDL_FLIP_NONE);
+        }
+    }
+    
+}
+
+
 
 void TextureManager::DrawTile(std::string tilesetID, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip) {
     SDL_Rect srcRect = { tileSize * frame, tileSize * row, tileSize, tileSize };

@@ -6,6 +6,8 @@ CollisionHandler* CollisionHandler::s_Instance = nullptr;
 CollisionHandler::CollisionHandler() {
     m_CollisionLayer = (TileLayer*)Engine::GetInstance()->GetMap()->GetLayers().back();
     m_CollisionTilemap = m_CollisionLayer->GetTileMap();
+    m_CollisionLayerBack= (TileLayer*)Engine::GetInstance()->GetMap()->GetLayers().front();
+    m_CollisionTilemapBack = m_CollisionLayerBack->GetTileMap();
 }
 
 bool CollisionHandler::CheckCollision(SDL_Rect a, SDL_Rect b) {
@@ -15,11 +17,11 @@ bool CollisionHandler::CheckCollision(SDL_Rect a, SDL_Rect b) {
 }
 
 
-int CollisionHandler::ConditionCollision(SDL_Rect a)
+int CollisionHandler::ConditionCollision(SDL_Rect a, int index)
 {
     int tileSize = 32;
     int RowCount = 20;
-    int ColCount = 60;
+    int ColCount = 90;
     int temp = 0;
     int left_tile = a.x / tileSize;
     int right_tile = (a.x + a.w) / tileSize;
@@ -33,12 +35,24 @@ int CollisionHandler::ConditionCollision(SDL_Rect a)
     if (top_tile < 0) top_tile = 0;
     if (bottom_tile > RowCount) bottom_tile = RowCount;
 
-    for (int i = left_tile; i <= right_tile; ++i) {
-        for (int j = top_tile; j <= bottom_tile; ++j) {
+    if (index == 1) {
+        for (int i = left_tile; i <= right_tile; ++i) {
+            for (int j = top_tile; j <= bottom_tile; ++j) {
 
-                temp= m_CollisionTilemap[j][i];
+                temp = m_CollisionTilemap[j][i];
                 if (temp > 0) return temp;
-                
+
+            }
+        }
+    }
+    if (index == 0) {
+        for (int i = left_tile; i <= right_tile; ++i) {
+            for (int j = top_tile; j <= bottom_tile; ++j) {
+
+                temp = m_CollisionTilemapBack[j][i];
+                if (temp > 0) return temp;
+
+            }
         }
     }
     return -1;
@@ -49,7 +63,7 @@ int CollisionHandler::ConditionCollision(SDL_Rect a)
 bool CollisionHandler::MapCollision(SDL_Rect a) {
     int tileSize = 32;
     int RowCount = 20;
-    int ColCount = 60;
+    int ColCount = 90;
 
     int left_tile = a.x / tileSize;
     int right_tile = (a.x + a.w) / tileSize;

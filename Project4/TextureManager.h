@@ -4,19 +4,21 @@
 #include <string>
 #include "SDL.h"
 #include <map>
-
+#include <SDL_ttf.h>
 class TextureManager
 {
 public:
     static TextureManager* GetInstance() { return s_Instance = (s_Instance != nullptr) ? s_Instance : new TextureManager(); }
 
     bool Load(std::string id, std::string filename);
+    void LoadnDrawText(std::string id, std::string text,int x, int y, SDL_Color text_color, TTF_Font* font);
     void Drop(std::string id);
     void Clean();
 
     void Draw(std::string id, int x, int y, int width, int heigt, SDL_RendererFlip flip = SDL_FLIP_NONE);
     void DrawTile(std::string tilesetID, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
     void DrawFrame(std::string id, int x, int y, int width, int heigt, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
+    
 
 private:
     TextureManager() {}

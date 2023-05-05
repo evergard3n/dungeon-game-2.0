@@ -16,9 +16,9 @@ void Camera::Update(float dt) {
         if (m_ViewBox.y < 0) {
             m_ViewBox.y = 0;
         }
-
-        if (m_ViewBox.x > SCREEN_WIDTH) {
-            m_ViewBox.x = SCREEN_WIDTH;
+        
+        if (m_ViewBox.x > SCREEN_WIDTH*2) {
+            m_ViewBox.x = SCREEN_WIDTH*2;
         }
 
         if (m_ViewBox.y > (SCREEN_HEIGHT - m_ViewBox.h)) {
