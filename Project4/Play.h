@@ -45,7 +45,7 @@ private:
     static void OpenMenu();
     static void Options();
     static void QuitGame();
-
+    
 private:
     Warrior* m_Player;
     //static Play* s_Instance;
@@ -62,6 +62,9 @@ private:
     std::string s2;
     friend class Enemy;
     Mix_Music* music;
+    Mix_Chunk* sfx_1;
+    Mix_Chunk* sfx_2;
+    bool PlayingMusic;
     std::unordered_map<int, Enemy*> m_Enemies;
 };
 

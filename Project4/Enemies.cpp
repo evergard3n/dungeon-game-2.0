@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Camera.h"
 #include "Play.h"
-static Registrar<Enemy> enemy("Enemy");
+
 int Enemy::S_n = 0;
 
 

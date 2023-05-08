@@ -8,7 +8,8 @@
 #include "tinyxml1.h"
 #include "GameObject.h"
 #include "TileLayer.h"
-#include "ObjectFactory.h"
+
+using ObjectList = std::vector<GameObject*>;
 
 class Parser {
 

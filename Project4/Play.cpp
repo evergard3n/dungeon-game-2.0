@@ -4,7 +4,7 @@
 #include "Button.h"
 #include "Helper.h"
 #include <SDL_mixer.h>
-
+#include "GameWon.h"
 int temp = 0;
 Play::Play() {}
 float absolute(float a, float b)
@@ -32,19 +32,39 @@ bool Play::Init() {
     
     
     menubtn = new Button(100, 50, OpenMenu, {"home_n", "home_h", "home_p"});
+    
     font = TTF_OpenFont("textures2/HelveticaWorld-Regular.ttf", 24);
     TextureMgr::Instance()->Add("background", "textures2/map/bg full.jpg");
+    TextureMgr::Instance()->Add("bg1", "assets/maps/bg layer 1.png");
+    TextureMgr::Instance()->Add("bg2", "assets/maps/bg layer 2.png");
+    TextureMgr::Instance()->Add("bg3", "assets/maps/bg layer 3.png");
+    TextureMgr::Instance()->Add("bg4", "assets/maps/bg layer 4.png");
+    TextureMgr::Instance()->Add("bg5", "assets/maps/bg layer 5.png");
     m_EnemyWaveLeft = 5;
     spawnEnemy(GetEnemyNumberNextWave());
     //m_UiObjects.push_back(optbtn);
     m_UiObjects.push_back(menubtn);
-    music = Mix_LoadMUS("assets/sounds/valley.ogg");
-    if (music == NULL)
-    {
-        printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
-
-    }
+    music = Mix_LoadMUS("assets/sounds/valley.wav");
+    sfx_1 = Mix_LoadWAV("assets/sounds/jump.wav");
+    sfx_2 = Mix_LoadWAV("assets/sounds/bark.wav");
     Mix_PlayMusic(music, -1);
+    PlayingMusic = true;
+    for (auto& it : m_Enemies) {
+        int id = it.first;
+        Enemy* enemies = it.second;
+        if (WavesLeft() > 3) {
+            enemies->m_HealthPoint;
+            enemies->m_Damage = 0.06;
+        }
+        else if (WavesLeft() == 3) {
+            enemies->m_HealthPoint = 150;
+            enemies->m_Damage = 0.08;
+        }
+        else {
+            enemies->m_HealthPoint = 200;
+            enemies->m_Damage = 0.015;
+        }
+    }
     return true;
 }
 
@@ -52,15 +72,30 @@ void Play::Render() {
 
     SDL_SetRenderDrawColor(m_Ctxt, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);
     SDL_RenderClear(m_Ctxt);
-    TextureMgr::Instance()->Draw(new Transform(0, 0, 1980, 1020, "background",SDL_FLIP_NONE,1,1,0,0.5));
+    TextureMgr::Instance()->Draw(new Transform(0, 0, 3075, 848, "bg1", SDL_FLIP_NONE, 1, 1, 0, 0.5));
+    TextureMgr::Instance()->Draw(new Transform(0, 0, 3075, 848, "bg2", SDL_FLIP_NONE, 1, 1, 0, 0.6));
+    TextureMgr::Instance()->Draw(new Transform(0, 0, 3075, 848, "bg3", SDL_FLIP_NONE, 1, 1, 0, 0.7));
+    TextureMgr::Instance()->Draw(new Transform(0, 0, 3075, 848, "bg4", SDL_FLIP_NONE, 1, 1, 0, 0.8));
+    TextureMgr::Instance()->Draw(new Transform(0, 0, 3075, 848, "bg5", SDL_FLIP_NONE, 1, 1, 0, 0.9));
     //TextureMgr::Instance()->Draw(new Transform(0, 0, 1980, 1020, "enemies_idle", SDL_FLIP_NONE, 1, 1, 0, 0.5));
     if (ShowInfo) {
         //SDL_Rect m_Something = { 200 , 50, 500,100 };
         //SDL_RenderFillRect(m_Ctxt, &m_Something);
-        TextureMgr::Instance()->LoadText("text", "Enemies Waves Left: " + s, 210, 53, {0,0,0,255}, font);
-        TextureMgr::Instance()->LoadText("text2", "Enemies Left This Wave: " + s2, 210, 53 + 30, { 0,0,0,255 }, font);
+        TextureMgr::Instance()->LoadText("text", "Enemies Waves Left: " + s, 210, 53, {255,255,255,255}, font);
+        TextureMgr::Instance()->LoadText("text2", "Enemies Left This Wave: " + s2, 210, 53 + 30, { 255,255,255,255 }, font);
     }
+    if (PlayingMusic) {
 
+        Mix_VolumeChunk(sfx_1, 3);
+        Mix_VolumeChunk(sfx_2, 1);
+        Mix_VolumeMusic(100);
+    }
+    else
+    {
+        Mix_VolumeChunk(sfx_1, 0);
+        Mix_VolumeChunk(sfx_2, 0);
+        Mix_VolumeMusic(0);
+    }
     m_TilelMap->Render();
     m_Player->Draw();
     for (auto& it : m_Enemies) {
@@ -152,8 +187,12 @@ void Play::Update() {
     s = std::to_string(m_EnemyWaveLeft);
     s2 = std::to_string(m_ThisWaveEnemy - temp);
     Events();
+    
     float dt = Timer::GetInstance()->GetDeltaTime();
     m_Player->Update(dt);
+    if (m_Player->m_IsJumping) {
+        Mix_PlayChannel(-1, sfx_1, 0);
+    }
     //m_Enemy->Update(dt);
     std::vector<int> m_removedIds;
     Camera::Instance()->TrackTarget();
@@ -186,18 +225,7 @@ void Play::Update() {
         Enemy* enemies = it.second;
 
         if (!enemies->IsDead()) {
-            if (WavesLeft() > 3) {
-                enemies->m_HealthPoint;
-                enemies->m_Damage = 0.06;
-            }
-            else if (WavesLeft() == 3) {
-                enemies->m_HealthPoint = enemies->m_HealthPoint *1.5;
-                enemies->m_Damage = 0.08;
-            }
-            else {
-                enemies->m_HealthPoint = enemies->m_HealthPoint * 2;
-                enemies->m_Damage = 0.015;
-            }
+            
             if (absolute((m_Player->m_Tf->X+60), enemies->m_Tf->X) <= 32 * 5) {
                 if ((m_Player->m_Tf->X+60) == enemies->m_Tf->X) {
                     enemies->m_IsIdle = true;
@@ -242,6 +270,8 @@ void Play::Update() {
                     enemies->m_IsAttacking = true;
                     enemies->m_Animation->SetProps( 0, 4, 100);
                     enemies->m_Tf->TextureID = "enemies_attacking";
+                    
+                    Mix_PlayChannel(-1, sfx_2, 0);
                     //Engine::GetInstance()->GetPlayer()->m_HealthPoint -= m_Damage;
                     m_Player->m_HealthPoint -= enemies->m_Damage;
                 }
@@ -253,6 +283,7 @@ void Play::Update() {
                 }
 
             }
+            
             enemies->Update(dt);
         }
         
@@ -263,7 +294,7 @@ void Play::Update() {
         for (auto object : m_UiObjects)
             object->Update(dt);
         if(m_Player->m_IsDead) StateMgr::Instance()->PushState(new GameOver());
-        if (m_EnemyWaveLeft == -1) OpenMenu();
+        if (m_EnemyWaveLeft == -1) StateMgr::Instance()->PushState(new GameWon());
         //m_Enemy->m_IsAttacking = true;
         //rEmttr->UpdateParticles(dt);
     }
@@ -288,12 +319,25 @@ void Play::Events() {
         ShowInfo = true;
     if (Input::Instance()->GetKeyDown(SDL_SCANCODE_O))
         ShowInfo = false;
+    if (Input::Instance()->GetKeyDown(SDL_SCANCODE_M))
+    {
+        PlayingMusic = true;
+    }
+    if (Input::Instance()->GetKeyDown(SDL_SCANCODE_N))
+        PlayingMusic = false;
     
 }
 
 bool Play::Exit() {
     m_GameObjects.clear();
     TextureMgr::Instance()->Clean();
+    Mix_FreeChunk(sfx_1);
+    Mix_FreeChunk(sfx_2);
+    Mix_FreeMusic(music);
+    sfx_1 = nullptr;
+    sfx_2 = nullptr;
+    music = nullptr;
+    Mix_Quit();
     return true;
 }
 

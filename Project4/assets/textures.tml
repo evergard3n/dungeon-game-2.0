@@ -48,6 +48,13 @@
 	<texture id="left_n" source="assets/textures/button/left_normal.png"/>
 	<texture id="left_h" source="assets/textures/button/left_hover.png"/>
 	<texture id="left_p" source="assets/textures/button/left_pressed.png"/>
+
+	<texture id="bg1" source="assets/textures/maps/bg layer 1.png"/>
+	<texture id="bg2" source="assets/textures/maps/bg layer 2.png"/>
+	<texture id="bg3" source="assets/textures/maps/bg layer 3.png"/>
+	<texture id="bg4" source="assets/textures/maps/bg layer 4.png"/>
+	<texture id="bg5" source="assets/textures/maps/bg layer 5.png"/>
+
 </textures>
 
  

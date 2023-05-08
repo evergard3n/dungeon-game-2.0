@@ -59,6 +59,7 @@ bool Menu::Exit() {
 
 // Callbacks
 void Menu::StartGame() {
+    Mix_HaltMusic();
     StateMgr::Instance()->PushState(new Play());
 }
 

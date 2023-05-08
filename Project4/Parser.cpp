@@ -1,8 +1,8 @@
 #include "Parser.h"
 #include "TextureManager.h"
-
+#include "ObjectFactory.h"
 Parser* Parser::s_Instance = nullptr;
-
+using ObjectPtr = GameObject*;
 
 bool Parser::ParseTextures(std::string source) {
 

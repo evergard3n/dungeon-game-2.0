@@ -139,6 +139,7 @@
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameWon.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -146,7 +147,6 @@
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Play.cpp" />
-    <ClCompile Include="SeqAnimation.cpp" />
     <ClCompile Include="SpriteAnimation.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="TextureManager.cpp" />
@@ -167,6 +167,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameWon.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="IObject.h" />
@@ -178,7 +179,6 @@
     <ClInclude Include="Play.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="RigidBody.h" />
-    <ClInclude Include="SeqAnimation.h" />
     <ClInclude Include="SpriteAnimation.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="StaticObject.h" />
