@@ -1,46 +1,48 @@
 #ifndef WARRIOR_H
 #define WARRIOR_H
 
-#include "Character.h"
-#include "Animation.h"
 #include "RigidBody.h"
 #include "Collider.h"
-#include "Vector2D.h"
+#include "GameObject.h"
+#include "SpriteAnimation.h"
 
-#define JUMP_TIME 10.0f
-#define JUMP_FORCE 15.0f
-#define DEFAULT_HP 100
-#define SUP_TIME 15.0f
+#define JUMP_FORCE 25.0f
+#define JUMP_TIME 15.0f;
 
-class Warrior : public Character {
+#define RUN_FORCE 4.0f
+#define ATTACK_TIME 20.0f
+
+class Warrior : public GameObject {
 
 public:
-    Warrior(Properties* props);
+    Warrior(Transform* tf);
+    virtual void Draw() override;
+    virtual void Clean() override;
+    virtual void Update(float dt) override;
 
-    virtual void Draw();
-    virtual void Clean();
-    virtual void Update(float dt);
-    inline int life_lefts();
-    virtual float GetHP() { return m_HealthPoint; }
-  
 private:
+    void AnimationState();
+
+private:
+    bool m_IsRunning;
     bool m_IsJumping;
+    bool m_IsFalling;
     bool m_IsGrounded;
     bool m_IsAttacking;
+    bool m_IsCrouching;
 
-    float m_HealthPoint = DEFAULT_HP;
-    int m_lives = 3;
     float m_JumpTime;
     float m_JumpForce;
-
+    float m_AttackTime;
+    float m_HealthPoint;
+    float m_HPcap;
+    bool m_IsDead;
     Collider* m_Collider;
-
-    Animation* m_Animation;
     RigidBody* m_RigidBody;
-    bool m_Won;
     Vector2D m_LastSafePosition;
-    friend class Enemies;
-    friend class Engine;
+    SpriteAnimation* m_Animation;
+    friend class Enemy;
+    friend class Play;
 };
 
 #endif // WARRIOR_H

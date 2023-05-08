@@ -1,186 +1,206 @@
 #include "Warrior.h"
-#include "TextureManager.h"
-#include "SDL.h"
 #include "Input.h"
-#include "Engine.h"
 #include "CollisionHandler.h"
-#include "Camera.h"
-#include <SDL_ttf.h>
-Warrior::Warrior(Properties* props) : Character(props) {
 
+
+
+
+Warrior::Warrior(Transform* tf) : GameObject(tf) {
+    m_Tf->ScrollRatio = 1;
     m_JumpTime = JUMP_TIME;
     m_JumpForce = JUMP_FORCE;
-
+    m_AttackTime = ATTACK_TIME;
+    m_HPcap = 100;
+    m_HealthPoint = m_HPcap;
     m_Collider = new Collider();
-    m_Collider->SetBuffer(-20, -10, 10, 50);
+    m_Collider->SetBuffer(-60, -24, -10, 0);
 
     m_RigidBody = new RigidBody();
-    m_RigidBody->SetGravity(4.0f);
+    m_RigidBody->SetGravity(5.0f);
 
-    m_Animation = new Animation();
-    m_Animation->SetProps(m_TextureID, 1, 4, 100);
+    m_Animation = new SpriteAnimation();
+    m_Animation->SetProps(1, 4, 100);
 }
 
 void Warrior::Draw() {
-    if (life_lefts() > 0) {
-        m_Animation->Draw(m_Transform->X, m_Transform->Y, m_Width, m_Height);
-
-        Vector2D cam = Camera::GetInstance()->GetPosition();
-        SDL_Rect box = m_Collider->Get();
-        box.x -= cam.X;
-        box.y -= cam.Y;
-        SDL_RenderDrawRect(Engine::GetInstance()->GetRenderer(), &box);
-        SDL_Rect health_bar = { m_Transform->X + 20, m_Transform->Y, 40, 3 };
+    //m_Collider->Draw();
+    Vector2D cam = Camera::Instance()->GetPosition();
+    SDL_Rect box = m_Collider->Get();
+    box.x -= cam.X;
+    box.y -= cam.Y;
+    SDL_RenderDrawRect(Engine::Instance()->GetRenderer(), &box);
+    if (m_HPcap <= 100) {
+        SDL_Rect health_bar = { m_Tf->X + 60, m_Tf->Y, 40, 3 };
         health_bar.x -= cam.X;
         health_bar.y -= cam.Y;
         health_bar.w *= m_HealthPoint / 100;
-        SDL_Rect health_bar_bg = { m_Transform->X + 20, m_Transform->Y, 40, 3 };
+        SDL_Rect health_bar_bg = { m_Tf->X + 60, m_Tf->Y, 40, 3 };
         health_bar_bg.x -= cam.X;
         health_bar_bg.y -= cam.Y;
-        SDL_SetRenderDrawColor(Engine::GetInstance()->GetRenderer(), 0, 0, 0, 100);
-        SDL_RenderFillRect(Engine::GetInstance()->GetRenderer(), &health_bar_bg);
-        
-        SDL_SetRenderDrawColor(Engine::GetInstance()->GetRenderer(), 0, 255, 0, 100);
-        SDL_RenderFillRect(Engine::GetInstance()->GetRenderer(), &health_bar);
-        for (int i = 0; i < life_lefts(); i++) {
-            int x = m_Transform->X+21;
-            TextureManager::GetInstance()->Draw("heart",x+i*11, health_bar_bg.y - cam.Y - 20, 10, 10);
-        }
+        SDL_SetRenderDrawColor(Engine::Instance()->GetRenderer(), 0, 0, 0, 100);
+        SDL_RenderFillRect(Engine::Instance()->GetRenderer(), &health_bar_bg);
+
+        SDL_SetRenderDrawColor(Engine::Instance()->GetRenderer(), 0, 255, 0, 100);
+        SDL_RenderFillRect(Engine::Instance()->GetRenderer(), &health_bar);
     }
+    else {
+        SDL_Rect health_bar = { m_Tf->X + 60, m_Tf->Y - 5, 40, 3 };
+        health_bar.x -= cam.X;
+        health_bar.y -= cam.Y;
+        
+        SDL_Rect health_bar_secondary = { m_Tf->X + 60, m_Tf->Y, 40, 3 };
+        health_bar_secondary.x -= cam.X;
+        health_bar_secondary.y -= cam.Y;
+        health_bar_secondary.w *= (m_HealthPoint-100) / 100;
+        SDL_Rect health_bar_bg = { m_Tf->X + 60, m_Tf->Y, 40, 3 };
+        health_bar_bg.x -= cam.X;
+        health_bar_bg.y -= cam.Y;
+        SDL_SetRenderDrawColor(Engine::Instance()->GetRenderer(), 0, 0, 0, 100);
+        SDL_RenderFillRect(Engine::Instance()->GetRenderer(), &health_bar_bg);
+        
+        SDL_SetRenderDrawColor(Engine::Instance()->GetRenderer(), 0, 255, 0, 100);
+        SDL_RenderFillRect(Engine::Instance()->GetRenderer(), &health_bar);
+        SDL_RenderFillRect(Engine::Instance()->GetRenderer(), &health_bar_secondary);
+    }
+    m_Animation->Draw(m_Tf);
 }
 
 void Warrior::Update(float dt) {
 
-    if (life_lefts() <= 0) {
-        std::cout << "Game Over!" << std::endl;
-        Clean();
+    m_IsRunning = false;
+    m_IsCrouching = false;
+    m_RigidBody->UnSetForce();
+
+    // Run forward
+    if (Input::Instance()->GetAxisKey(HORIZONTAL) == FORWARD && !m_IsAttacking) {
+        m_RigidBody->ApplyForceX(FORWARD * RUN_FORCE);
+        m_Tf->Flip = SDL_FLIP_NONE;
+        m_IsRunning = true;
+    }
+
+    // Run backward
+    if (Input::Instance()->GetAxisKey(HORIZONTAL) == BACKWARD && !m_IsAttacking) {
+        m_RigidBody->ApplyForceX(BACKWARD * RUN_FORCE);
+        m_Tf->Flip = SDL_FLIP_HORIZONTAL;
+        m_IsRunning = true;
+    }
+
+    // Crouch
+    if (Input::Instance()->GetKeyDown(SDL_SCANCODE_S)) {
+        m_RigidBody->UnSetForce();
+        m_IsCrouching = true;
+    }
+
+    // Attack
+    if (Input::Instance()->GetKeyDown(SDL_SCANCODE_K)) {
+        m_RigidBody->UnSetForce();
+        m_IsAttacking = true;
+    }
+
+    // Jump
+    if (Input::Instance()->GetKeyDown(SDL_SCANCODE_J) && m_IsGrounded) {
+        m_IsJumping = true;
+        m_IsGrounded = false;
+        m_RigidBody->ApplyForceY(UPWARD * m_JumpForce);
+    }
+    if (Input::Instance()->GetKeyDown(SDL_SCANCODE_J) && m_IsJumping && m_JumpTime > 0) {
+        m_JumpTime -= dt;
+        m_RigidBody->ApplyForceY(UPWARD * m_JumpForce);
     }
     else {
-        m_Animation->SetProps("player", 1, 4, 100);
-        m_RigidBody->UnSetForce();
+        m_IsJumping = false;
+        m_JumpTime = JUMP_TIME;
+    }
+
+    // Fall
+    if (m_RigidBody->Veclocity().Y > 0 && !m_IsGrounded)
+        m_IsFalling = true;
+    else
+        m_IsFalling = false;
+
+    // Attack timer
+    if (m_IsAttacking && m_AttackTime > 0) {
+        m_AttackTime -= dt;
+    }
+    else {
         m_IsAttacking = false;
-
-        if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) {
-            m_RigidBody->ApplyForceX(3 * BACKWARD);
-            m_Flip = SDL_FLIP_HORIZONTAL;
-            m_Animation->SetProps("player_run", 1, 4, 100, SDL_FLIP_HORIZONTAL);
-        }
-
-        if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_D)) {
-            m_RigidBody->ApplyForceX(3 * FORWARD);
-            m_Flip = SDL_FLIP_NONE;
-            m_Animation->SetProps("player_run", 1, 4, 100);
-        }
-        if (m_Flip == SDL_FLIP_HORIZONTAL) {
-            m_Animation->SetProps("player", 1, 4, 100, SDL_FLIP_HORIZONTAL);
-        }
-        // Jump
-        if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_W) && m_IsGrounded) {
-            m_IsJumping = true;
-            m_IsGrounded = false;
-            m_RigidBody->ApplyForceY(UPWARD * m_JumpForce);
-        }
-        if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_W) && m_IsJumping && m_JumpTime > 0) {
-            m_JumpTime -= dt;
-            m_RigidBody->ApplyForceY(UPWARD * m_JumpForce);
-        }
-        else {
-            m_IsJumping = false;
-            m_JumpTime = JUMP_TIME;
-        }
-        if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_G) && m_IsGrounded) {
-            m_IsAttacking = true;
-            m_Animation->SetProps("player_attacking", 1, 4, 100, m_Flip);
-        }
-        // move on X axis
-        m_RigidBody->Update(dt);
-        m_LastSafePosition.X = m_Transform->X;
-        m_Transform->X += m_RigidBody->Position().X;
-        m_Collider->Set(m_Transform->X, m_Transform->Y, 60, 96);
-
-        if (CollisionHandler::GetInstance()->MapCollision(m_Collider->Get()))
-            m_Transform->X = m_LastSafePosition.X;
-
-
-
-        // move on Y axis
-        m_RigidBody->Update(dt);
-        m_LastSafePosition.Y = m_Transform->Y;
-        m_Transform->Y += m_RigidBody->Position().Y;
-        m_Collider->Set(m_Transform->X, m_Transform->Y, 60, 96);
-
-        if (CollisionHandler::GetInstance()->MapCollision(m_Collider->Get())) {
-            m_IsGrounded = true;
-            m_Transform->Y = m_LastSafePosition.Y;
-        }
-        else {
-            m_IsGrounded = false;
-        }
-
-        if (m_IsJumping || !m_IsGrounded) {
-            if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) m_Animation->SetProps("player_jump", 1, 2, 150, m_Flip);
-            else m_Animation->SetProps("player_jump", 1, 2, 150);
-
-        }
-        std::cout << m_HealthPoint << std::endl;
-        //current losing condition code
-        /*if (m_Transform->Y / 32 >= 17 || m_HealthPoint <= 0) {
-            std::cout << "Game Over!" << std::endl;
-            Engine::GetInstance()->Clean();
-            Engine::GetInstance()->Quit();
-        }*/
-        //current winning condition
-
-        //std::cout << m_Transform->X << " " << m_Transform->Y << std::endl;
-
-
-        if (Engine::GetInstance()->WavesLeft()==-1) {
-            std::cout << "You Won!" << std::endl;
-            m_Won = true;
-        }
-
-        /*if (CollisionHandler::GetInstance()->ConditionCollision(m_Collider->Get(), 27)) {
-            m_RigidBody->Update(dt);
-            if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) {
-                m_RigidBody->UnSetForce();
-                m_RigidBody->ApplyForceX(1 * FORWARD);
-                m_Animation->SetProps("player_run", 1, 4, 100, SDL_FLIP_HORIZONTAL);
-            }
-
-            if (Input::GetInstance()->GetKeyDown(SDL_SCANCODE_D)) {
-                m_RigidBody->UnSetForce();
-                m_RigidBody->ApplyForceX(1 * FORWARD);
-                m_Animation->SetProps("player_run", 1, 4, 100);
-            }
-            m_RigidBody->Update(dt);
-
-        }*/
-
-        if (CollisionHandler::GetInstance()->ConditionCollision(m_Collider->Get(), 0) == 104) {
-            std::cout << "healing" << std::endl;
-            m_HealthPoint = DEFAULT_HP;
-
-        }
-
-        m_Origin->X = m_Transform->X + m_Width / 2;
-        m_Origin->Y = m_Transform->Y + m_Height / 2;
-        m_Animation->Update();
+        m_AttackTime = ATTACK_TIME;
     }
-    
-}
 
-int Warrior::life_lefts()
-{
+    // move on X axis
+    m_RigidBody->Update(dt);
+    m_LastSafePosition.X = m_Tf->X;
+    m_Tf->X += m_RigidBody->Position().X;
+    m_Collider->Set(m_Tf->X, m_Tf->Y, 18, 50);
+
+    if (m_Collider->CollideWithMap())
+        m_Tf->X = m_LastSafePosition.X;
+
+
+    // move on Y axis
+    m_RigidBody->Update(dt);
+    m_LastSafePosition.Y = m_Tf->Y;
+    m_Tf->Y += m_RigidBody->Position().Y;
+    m_Collider->Set(m_Tf->X, m_Tf->Y, 18, 50);
+
+    if (m_Collider->CollideWithMap()) {
+        m_IsGrounded = true;
+        m_Tf->Y = m_LastSafePosition.Y;
+    }
+    else {
+        m_IsGrounded = false;
+    }
+
+    GameObject::Update(dt);
+    if (m_HealthPoint >= m_HPcap) {
+        m_HealthPoint = m_HPcap;
+    }
     if (m_HealthPoint <= 0) {
-        m_lives--;
-        m_HealthPoint = DEFAULT_HP;
+        m_IsDead = true;
+        Clean();
     }
-    return m_lives;
+    AnimationState();
+    m_Animation->Update(dt);
 }
 
 
+void Warrior::AnimationState() {
+    // idling
+    m_Tf->TextureID = "player_idle";
+    m_Animation->SetProps(0, 6, 100);
+
+    // running
+    if (m_IsRunning) {
+        m_Tf->TextureID = "player_run";
+        m_Animation->SetProps(0, 4, 100);
+    }
+
+    // crouching
+    if (m_IsCrouching) {
+        m_Tf->TextureID = "player_crouch";
+        m_Animation->SetProps(0, 6, 100);
+    }
+
+    // jumping
+    if (m_IsJumping) {
+        m_Tf->TextureID = "player_jump";
+        m_Animation->SetProps(0, 2, 200);
+    }
+
+    // falling
+    if (m_IsFalling) {
+        m_Tf->TextureID = "player_fall";
+        m_Animation->SetProps(0, 2, 400);
+    }
+
+    // attacking
+    if (m_IsAttacking) {
+        m_Tf->TextureID = "player_attack";
+        m_Animation->SetProps(0, 14, 80);
+    }
+}
 
 void Warrior::Clean() {
-    TextureManager::GetInstance()->Drop(m_TextureID);
+
 }
 

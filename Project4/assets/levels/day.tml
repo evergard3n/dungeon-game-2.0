@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objects>
+    <object type="CLOUD" texture="cloud" x="600" y ="0" w="0" h="0" flip="0" scX="2" scY="2" sratio="0.2" rot="0"/>
+    <object type="SOBJECT" texture="sun"  x="900" y ="0" w="0" h="0" flip="0" scX="0.5" scY="0.5" sratio="0.08" rot="0"/>
+    <object type="CLOUD" texture="cloud" x="100" y ="80" w="0" h="0" flip="0" scX="4" scY="4" sratio="0.2" rot="0"/>   
+    <object type="SOBJECT" texture="montain1" x="-10" y ="250" w="0" h="0" flip="0" scX="3" scY="3" sratio="0.1" rot="0"/>    
+    <object type="CLOUD" texture="cloud2" x="100" y ="0" w="0" h="0" flip="0" scX="1" scY="1" sratio="0.2" rot="0"/> 
+    <object type="SOBJECT" texture="pine3" x="100" y ="400" w="0" h="0" flip="0" scX="3.5" scY="3" sratio="0.1" rot="0"/>    
+    <object type="SOBJECT" texture="pine1" x="-10" y ="440" w="0" h="0" flip="0" scX="3.5" scY="3" sratio="0.15" rot="0"/>
+    <object type="SOBJECT" texture="pine2" x="-50" y ="500" w="0" h="0" flip="0" scX="3.5" scY="3" sratio="0.2" rot="0"/>  
+
+    <object type="SOBJECT" texture="tree2" x="-100" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+    <object type="SOBJECT" texture="tree1" x="0" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+    <object type="SOBJECT" texture="tree2" x="100" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree1" x="400" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree3" x="500" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree2" x="600" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree6" x="700" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree4" x="1000" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree2" x="1100" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree3" x="1200" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree2" x="1400" y="300" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+
+</Objects>

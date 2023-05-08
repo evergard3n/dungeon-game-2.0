@@ -1,17 +1,19 @@
 #include "Engine.h"
 #include "Timer.h"
-#include <Windows.h>
-using namespace std;
+#include "Input.h"
+#include "StateManager.h"
 
-int main(int argc, char** argv)
-{
-	Engine::GetInstance()->Init();
-	while (Engine::GetInstance()->IsRunning()) {
-		Engine::GetInstance()->Events();
-		Engine::GetInstance()->Update();
-		Engine::GetInstance()->Render();
-		Timer::GetInstance()->Tick();
-	}
-	Engine::GetInstance()->Clean();
-	return 0;
+int main(int argc, char** argv) {
+
+    Engine::Instance()->Init();
+
+    while (Engine::Instance()->IsRunning()) {
+        Input::Instance()->Listen();
+        StateMgr::Instance()->Render();
+        StateMgr::Instance()->Update();
+        Timer::GetInstance()->Tick();
+    }
+
+    return EXIT_SUCCESS;
 }
+

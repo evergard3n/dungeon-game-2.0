@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<textures>
+    <texture id="player_run" source="assets/textures/player/Run.png"/>
+    <texture id="player_idle" source="assets/textures/player/Idle.png"/>
+    <texture id="player_jump" source="assets/textures/player/Jump.png"/>
+    <texture id="player_fall" source="assets/textures/player/Fall.png"/>
+    <texture id="player_crouch" source="assets/textures/player/Crouch.png"/>
+    <texture id="player_attack" source="assets/textures/player/Attack.png"/>
+	
+	<texture id="enemies_idle" source="textures2/Hyena_idle.png"/>
+	<texture id="enemies_walking" source="textures2/Hyena_walk.png"/>
+	<texture id="enemies_attacking" source="textures2/Hyena_attack.png"/>
+	<texture id="enemies_hurt" source="textures2/Hyena_hurt.png"/>
+
+	<texture id="objects" source="assets/maps/objects.png"/>
+	<texture id="Jungle_terrain" source="assets/maps/Jungle_terrain.png"/>
+	<texture id="tileset test" source="textures2/map/tileset test.png"/>
+	<texture id="tileset" source="textures2/map/tileset.png"/>
+
+	<texture id="play_normal" source="assets/textures/button/play_normal.png"/>
+    <texture id="play_hover" source="assets/textures/button/play_hover.png"/>
+    <texture id="play_pressed" source="assets/textures/button/play_pressed.png"/>
+
+	<texture id="play_n" source="assets/textures/button/play_normal.png"/>
+	<texture id="play_h" source="assets/textures/button/play_hover.png"/>
+	<texture id="play_p" source="assets/textures/button/play_pressed.png"/>
+
+	<texture id="opt_n" source="assets/textures/button/options_normal.png"/>
+	<texture id="opt_h" source="assets/textures/button/options_hover.png"/>
+	<texture id="opt_p" source="assets/textures/button/options_pressed.png"/>
+
+	<texture id="playag_n" source="assets/textures/button/playagain_normal.png"/>
+	<texture id="playag_h" source="assets/textures/button/playagain_hover.png"/>
+	<texture id="playag_p" source="assets/textures/button/playagain_pressed.png"/>
+
+	<texture id="home_n" source="assets/textures/button/home_normal.png"/>
+	<texture id="home_h" source="assets/textures/button/home_hover.png"/>
+	<texture id="home_p" source="assets/textures/button/home_pressed.png"/>
+	
+	<texture id="quit_n" source="assets/textures/button/quit_normal.png"/>
+	<texture id="quit_h" source="assets/textures/button/quit_hover.png"/>
+	<texture id="quit_p" source="assets/textures/button/quit_pressed.png"/>
+
+	<texture id="home_n" source="textures2/home_normal.png"/>
+	<texture id="home_h" source="textures2/home_hover.png"/>
+	<texture id="home_p" source="textures2/home_pressed.png"/>
+
+	<texture id="left_n" source="assets/textures/button/left_normal.png"/>
+	<texture id="left_h" source="assets/textures/button/left_hover.png"/>
+	<texture id="left_p" source="assets/textures/button/left_pressed.png"/>
+</textures>
+
+ 

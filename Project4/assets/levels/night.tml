@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objects>
+    <object type="SOBJECT" texture="night_sky" x="0" y ="-50" w="0" h="0" flip="0" scX="3" scY="3" sratio="0.08" rot="0"/>
+    <object type="SOBJECT" texture="moon"  x="550" y ="100" w="0" h="0" flip="0" scX="0.6" scY="0.6" sratio="0.07" rot="0"/>
+    <object type="CLOUD" texture="cloud_night" x="1200" y ="0" w="0" h="0" flip="0" scX="1.5" scY="1.5" sratio="0.2" rot="0"/>    
+    <object type="CLOUD" texture="cloud_night" x="0" y ="-50" w="0" h="0" flip="0" scX="3" scY="3" sratio="0.15" rot="0"/>
+    <object type="SOBJECT" texture="mountain__night" x="0" y ="220" w="0" h="0" flip="0" scX="3" scY="1" sratio="0.1" rot="0"/>
+    
+    <object type="SOBJECT" texture="pine2_night" x="100" y ="140" w="0" h="0" flip="0" scX="4" scY="4" sratio="0.2" rot="0"/>
+    <object type="SOBJECT" texture="pine2_night" x="0" y ="180" w="0" h="0" flip="0" scX="4" scY="4" sratio="0.2" rot="0"/>    
+    <object type="SOBJECT" texture="pine1" x="100" y ="340" w="0" h="0" flip="0" scX="4" scY="4" sratio="0.4" rot="0"/>
+    <object type="SOBJECT" texture="pine1" x="0" y ="280" w="0" h="0" flip="0" scX="4" scY="4" sratio="0.4" rot="0"/>
+
+    <object type="SOBJECT" texture="tree2" x="300" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+    <object type="SOBJECT" texture="tree2" x="100" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+    <object type="SOBJECT" texture="tree2" x="0" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+    
+    <object type="SOBJECT" texture="tree_dead" x="400" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="600" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="1000" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="1200" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="1400" y="336" w="80" h="112" flip="0" scX="3.5" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="1800" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="2200" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="2400" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="2800" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+
+    <object type="SOBJECT" texture="tree_night" x="500" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="1000" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+    <object type="SOBJECT" texture="tree_night" x="-100" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>     
+    <object type="SOBJECT" texture="tree_night" x="700" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="900" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/> 
+    <object type="SOBJECT" texture="tree_night" x="1200" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+    <object type="SOBJECT" texture="tree_night" x="1800" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+    <object type="SOBJECT" texture="tree_night" x="3000" y="336" w="80" h="112" flip="0" scX="3" scY="4" sratio="1" rot="0"/>
+</Objects>

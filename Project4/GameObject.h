@@ -1,58 +1,36 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
-
+#include <SDL.h>
 #include "IObject.h"
 #include "Transform.h"
-#include "SDL.h"
-#include "Point.h"
-
-struct Properties {
-
-public:
-    Properties(std::string textureID, int x, int y, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE) {
-        X = x;
-        Y = y;
-        Flip = flip;
-        Width = width;
-        Height = height;
-        TextureID = textureID;
-    }
-
-public:
-    std::string TextureID;
-    int Width, Height;
-    float X, Y;
-    SDL_RendererFlip Flip;
-};
-
+#include "TextureManager.h"
 class GameObject : public IObject {
 
 public:
-    GameObject(Properties* props) : m_TextureID(props->TextureID),
-        m_Width(props->Width), m_Height(props->Height), m_Flip(props->Flip) {
-        m_Transform = new Transform(props->X, props->Y);
-
-        float px = props->X + props->Width / 2;
-        float py = props->Y + props->Height / 2;
-        m_Origin = new Point(px, py);
+    GameObject(Transform* tf) : m_Tf(tf) {
         m_Id = S_n;
         S_n++;
     }
 
-    inline Point* GetOrigin() { return m_Origin; }
-    virtual int GetId() const { return m_Id; }
-    virtual void Draw() = 0;
-    virtual void Clean() = 0;
-    virtual void Update(float dt) = 0;
+    virtual void Draw() {
+        TextureMgr::Instance()->Draw(m_Tf);
+    }
+
+    virtual void Update(float dt) {
+        m_Tf->Origin->X = m_Tf->X + m_Tf->Width / 2;
+        m_Tf->Origin->Y = m_Tf->Y + m_Tf->Height / 2;
+    }
+
+    virtual void Clean() {}
+
+    inline Vector2D* GetOrigin() { return m_Tf->Origin; }
+    virtual int GetId() { return m_Id; }
 
 protected:
-    Point* m_Origin;
-    Transform* m_Transform;
-    int m_Width, m_Height;
+    Transform* m_Tf;
     int m_Id;
     static int S_n;
-    std::string m_TextureID;
-    SDL_RendererFlip m_Flip;
 };
+
 
 #endif // GAMEOBJECT_H

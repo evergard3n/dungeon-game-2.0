@@ -1,150 +1,102 @@
 #include "Enemies.h"
-#include "CollisionHandler.h"
-#include "Engine.h"
 #include "Camera.h"
-float absolute(float a, float b)
-{
-	if (a - b >= 0) return a - b;
-	else return b - a;
-}
-Enemies::Enemies(Properties* props): Character(props)
-{
-	if (Engine::GetInstance()->WavesLeft() > 3) {
-		m_HealthPoint = DEFAULT_HP;
-		m_Damage = 0.06;
-	}
-	else if(Engine::GetInstance()->WavesLeft()==3){
-		m_HealthPoint = DEFAULT_HP*1.5;
-		m_Damage = 0.08;
-	}
-	else {
-		m_HealthPoint = DEFAULT_HP * 2;
-		m_Damage = 0.015;
-	}
-	m_EneCollider = new Collider();
-	m_EneCollider->SetBuffer(-20, -10, 10, 50);
-	m_EneRigidbody = new RigidBody();
+#include "CollisionHandler.h"
+#include <iostream>
+#include "Camera.h"
+#include "Play.h"
+static Registrar<Enemy> enemy("Enemy");
+int Enemy::S_n = 0;
 
-	m_EneAnimation = new Animation();
-	m_EneAnimation->SetProps(m_TextureID, 1, 4, 100);
+
+Enemy::Enemy(Transform* tf) :GameObject(tf) {
+    m_Tf->ScrollRatio = 1;
+    m_EneRigidbody = new RigidBody();
+    m_EneRigidbody->SetGravity(9.8);
+    m_Collider = new Collider();
+
+    m_HealthPoint = 100;
+    m_Damage = 0.06;
+
+    m_Animation = new SpriteAnimation(true);
+    m_Animation->SetProps(0, 4, 100);
+    m_Id = S_n;
+    S_n++;
+    
 }
 
-void Enemies::Draw()
-{
-	Vector2D cam = Camera::GetInstance()->GetPosition();
-	m_EneAnimation->Draw(m_Transform->X, m_Transform->Y, m_Width, m_Height);
-	SDL_Rect box = m_EneCollider->Get();
-	SDL_RenderDrawRect(Engine::GetInstance()->GetRenderer(), &box);
-	SDL_Rect health_bar = { m_Transform->X, m_Transform->Y, 20, 3 };
-	health_bar.x -= cam.X;
-	health_bar.y -= cam.Y;
-	health_bar.w *= m_HealthPoint / 100;
-	SDL_SetRenderDrawColor(Engine::GetInstance()->GetRenderer(), 255, 0, 0, 100);
-	if(m_HealthPoint>0) SDL_RenderFillRect(Engine::GetInstance()->GetRenderer(), &health_bar);
+void Enemy::Draw() {
+    //m_Animation->DrawFrame(m_Transform->X, m_Transform->Y, m_Flip, 0.3f, 0.3f);
+    
+    //TextureMgr::Instance()->DrawFrame(m_Tf, 0, 6);
+    Vector2D cam = Camera::Instance()->GetPosition();
+    m_Animation->Draw(m_Tf);
+    std::cout << "does this work?" << std::endl;
+    SDL_Rect health_bar = { m_Tf->X, m_Tf->Y, 20, 3 };
+    health_bar.x -= cam.X;
+    health_bar.y -= cam.Y;
+    health_bar.w *= m_HealthPoint / 100;
+    SDL_SetRenderDrawColor(Engine::Instance()->GetRenderer(), 255, 0, 0, 100);
+    if (m_HealthPoint > 0) SDL_RenderFillRect(Engine::Instance()->GetRenderer(), &health_bar);
 }
 
-void Enemies::Clean()
-{
-	TextureManager::GetInstance()->Drop(m_TextureID);
+void Enemy::Update(float dt) {
+
+    // X-Axis movements
+    m_EneRigidbody->Update(dt);
+    m_EneLastSafePos.X = m_Tf->X;
+    m_Tf->X += m_EneRigidbody->Position().X;
+    m_Collider->Set(m_Tf->X, m_Tf->Y, 40, 40);
+
+    if (CollisionHandler::Instance()->MapCollision(m_Collider->Get()))
+        m_Tf->X = m_EneLastSafePos.X;
+
+    // Y-Axis movements
+    m_EneRigidbody->Update(dt);
+    m_EneLastSafePos.Y = m_Tf->Y;
+    m_Tf->Y += m_EneRigidbody->Position().Y;
+    m_Collider->Set(m_Tf->X, m_Tf->Y, 40, 40);
+
+    if (CollisionHandler::Instance()->MapCollision(m_Collider->Get()))
+        m_Tf->Y = m_EneLastSafePos.Y;
+    //AnimationState();
+    m_Animation->Update(dt);
+    
 }
 
-void Enemies::Update(float dt)
+bool Enemy::IsDead()
 {
-	m_IsDead = false;
-	m_EneAnimation->SetProps("enemies", 1, 4, 100);
-	m_EneRigidbody->Update(dt);
-	m_EneLastSafePos.X = m_Transform->X;
-	m_Transform->X += m_EneRigidbody->Position().X;
-	m_EneCollider->Set(m_Transform->X, m_Transform->Y, 40, 80);
-	if (CollisionHandler::GetInstance()->MapCollision(m_EneCollider->Get()))
-		m_Transform->X = m_EneLastSafePos.X;
-	float playerPosX = Engine::GetInstance()->GetPlayer()->m_Transform->X;
-	float playerPosY = Engine::GetInstance()->GetPlayer()->m_Transform->Y;
-	float temp_time = 2;
-	if (m_HealthPoint <= 0) {
-		m_IsDead = true;
-		m_IsAttacking = false;
-	}	
-	else {
-		if (absolute(playerPosX, m_Transform->X) <= 32 * 5) {
-
-			if (playerPosX == m_Transform->X) {
-				m_EneRigidbody->UnSetForce();
-				m_IsIdle = true;
-				m_EneAnimation->SetProps("enemies", 1, 4, 100, m_Flip);
-			}
-			if (playerPosX < m_Transform->X) {
-				m_Flip = SDL_FLIP_NONE;
-				m_IsWalking = true;
-				m_EneAnimation->SetProps("enemies_walking", 1, 4, 100, m_Flip);
-				m_EneRigidbody->ApplyForceX(0.5 * BACKWARD);
-			}
-
-			if (playerPosX > m_Transform->X) {
-				m_Flip = SDL_FLIP_HORIZONTAL;
-				m_IsWalking = true;
-				m_EneAnimation->SetProps("enemies_walking", 1, 4, 100, m_Flip);
-				m_EneRigidbody->ApplyForceX(0.5 * FORWARD);
-			}
-		}
-		else {
-			m_EneRigidbody->UnSetForce();
-			m_IsIdle = true;
-			m_EneAnimation->SetProps("enemies", 1, 4, 100, m_Flip);
-		}
-		//attacking
-		
-		if (CollisionHandler::GetInstance()->CheckCollision(m_EneCollider->Get(), Engine::GetInstance()->GetPlayer()->m_Collider->Get())) {
-			if (Engine::GetInstance()->GetPlayer()->m_IsAttacking == false) {
-				m_IsAttacking = true;
-				m_EneAnimation->SetProps("enemies_attacking", 1, 4, 100, m_Flip);
-				Engine::GetInstance()->GetPlayer()->m_HealthPoint -= m_Damage;
-				
-			}
-			else {
-				m_IsAttacking = false;
-				m_EneAnimation->SetProps("enemies_hurt", 1, 2, 400, m_Flip);
-				m_HealthPoint -= 2.0;
-			}
-
-		}
-		
-		
-	}
-	
-	
-	
-	m_EneRigidbody->Update(dt);
-	m_EneLastSafePos.Y = m_Transform->Y;
-	m_Transform->Y += m_EneRigidbody->Position().Y;
-	m_EneCollider->Set(m_Transform->X, m_Transform->Y, 40, 80);
-	//std::cout << RandomSpawnPos().X <<" "<< RandomSpawnPos().Y << std::endl;
-	if (CollisionHandler::GetInstance()->MapCollision(m_EneCollider->Get()))
-		m_Transform->Y = m_EneLastSafePos.Y;
-	m_EneAnimation->Update();
-	
+    if (m_HealthPoint <= 0) {
+        m_IsDead = true;
+    }
+    else m_IsDead = false;
+    return m_IsDead;
 }
 
-int Enemies::randomEneType()
+
+void Enemy::AnimationState()
 {
-	srand(time(0));
-	m_EneType = rand() % 2;
-	return m_EneType;
+    
+    m_Tf->TextureID = "enemies_idle";
+    m_Animation->SetProps(0, 4, 100);
+    
+    if (m_IsAttacking) {
+        m_Tf->TextureID = "enemies_attacking";
+        m_Animation->SetProps(0, 6, 100);
+    }
+    if (m_IsHurt) {
+        m_Tf->TextureID = "enemies_hurt";
+        m_Animation->SetProps(0, 2, 100);
+    }
+    if (m_IsWalking) {
+        m_Tf->TextureID = "enemies_walking";
+        m_Animation->SetProps(0, 6, 100);
+    }
 }
 
-Vector2D Enemies::RandomSpawnPos()
-{
-	Vector2D spawnPos;
-	srand(time(0));
-	int UpBoundX = 60;
-	int LowBoundX = 3;
-	int UpBoundY = 5, LowBoundY = 3;
-	spawnPos.X = rand() % (UpBoundX - LowBoundX + 1) + LowBoundX;
-	spawnPos.Y = rand() % (UpBoundY - LowBoundY + 1) + LowBoundY;
-	
-	return spawnPos*32;
-}
 
+void Enemy::Clean() {
+
+}
 
 
 
