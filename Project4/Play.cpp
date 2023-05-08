@@ -17,8 +17,7 @@ bool Play::Init() {
     m_ClearColor = SKYBLUE;
     m_Ctxt = Engine::Instance()->GetRenderer();
 
-    //Parser::Instance()->ParseTextures("assets/textures.tml");
-    //Parser::Instance()->ParseTextures("assets/gui_textures.tml");
+    
     m_TilelMap = Parser::Instance()->ParseMap("assets/maps/map.tmx");
     
     ShowInfo = false;

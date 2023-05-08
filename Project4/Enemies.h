@@ -4,7 +4,6 @@
 #include "GameObject.h"
 #include "RigidBody.h"
 #include "Collider.h"
-#include "SeqAnimation.h"
 #include "SpriteAnimation.h"
 #include "Play.h"
 #include "ObjectFactory.h"

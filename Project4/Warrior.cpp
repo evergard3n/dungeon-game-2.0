@@ -25,16 +25,13 @@ Warrior::Warrior(Transform* tf) : GameObject(tf) {
 void Warrior::Draw() {
     //m_Collider->Draw();
     Vector2D cam = Camera::Instance()->GetPosition();
-    SDL_Rect box = m_Collider->Get();
-    box.x -= cam.X;
-    box.y -= cam.Y;
-    SDL_RenderDrawRect(Engine::Instance()->GetRenderer(), &box);
+    
     if (m_HPcap <= 100) {
-        SDL_Rect health_bar = { m_Tf->X + 60, m_Tf->Y, 40, 3 };
+        SDL_Rect health_bar = { m_Tf->X + 50, m_Tf->Y, 40, 3 };
         health_bar.x -= cam.X;
         health_bar.y -= cam.Y;
         health_bar.w *= m_HealthPoint / 100;
-        SDL_Rect health_bar_bg = { m_Tf->X + 60, m_Tf->Y, 40, 3 };
+        SDL_Rect health_bar_bg = { m_Tf->X + 50, m_Tf->Y, 40, 3 };
         health_bar_bg.x -= cam.X;
         health_bar_bg.y -= cam.Y;
         SDL_SetRenderDrawColor(Engine::Instance()->GetRenderer(), 0, 0, 0, 100);
