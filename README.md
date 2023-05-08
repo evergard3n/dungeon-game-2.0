@@ -17,7 +17,13 @@ A village deep inside the tropical forest of Alexia is being attacked by hordes 
 - SDL2_TTF (https://github.com/libsdl-org/SDL_ttf)
 - SDL2_Mixer (https://github.com/libsdl-org/SDL_mixer)
 - TinyXML (https://github.com/leethomason/tinyxml2)
-## References and Credit:
+## References and Credits:
 - Tileset from: https://itch.io/search?q=tileset
 - Techniques learnt from Madsycode, Lazyfoo
 - Audio source: https://www.freesoundeffects.com/
+## Installation Guides:
+- Suggested IDE: Microsoft Visual Studio with C++ installed.
+- How to install SDL2: https://lazyfoo.net/tutorials/SDL/01_hello_SDL/index.php
+- How to install SDL2_Image/SDL2_TTF/SDL2_Mixer: https://lazyfoo.net/tutorials/SDL/06_extension_libraries_and_loading_other_image_formats/index.php
+- How to setup TinyXML (Vietnamese): https://www.iostream.vn/modern-cpp/thao-tac-voi-xml-su-dung-tinyxml-trong-c-31kQnH 
+
