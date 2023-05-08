@@ -19,5 +19,5 @@ A village deep inside the tropical forest of Alexia is being attacked by hordes 
 - TinyXML (https://github.com/leethomason/tinyxml2)
 ## References and Credit:
 - Tileset from: https://itch.io/search?q=tileset
-- Techniques learnt from Madsycode
+- Techniques learnt from Madsycode, Lazyfoo
 - Audio source: https://www.freesoundeffects.com/
