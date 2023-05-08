@@ -81,7 +81,7 @@ void Play::Render() {
     if (ShowInfo) {
         //SDL_Rect m_Something = { 200 , 50, 500,100 };
         //SDL_RenderFillRect(m_Ctxt, &m_Something);
-        TextureMgr::Instance()->LoadText("text", "Enemies Waves Left: " + s, 210, 53, {255,255,255,255}, font);
+        TextureMgr::Instance()->LoadText("text", "Enemy Waves Left: " + s, 210, 53, {255,255,255,255}, font);
         TextureMgr::Instance()->LoadText("text2", "Enemies Left This Wave: " + s2, 210, 53 + 30, { 255,255,255,255 }, font);
     }
     if (PlayingMusic) {
